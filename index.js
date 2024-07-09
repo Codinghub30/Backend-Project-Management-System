@@ -11,6 +11,7 @@ const app = express();
 const allowedOrigins = [
     'https://backend-project-management-system-1.onrender.com',
     'http://localhost:3000',
+    'https://668d5102fdccce81c76c2831--brilliant-pastelito-c99b45.netlify.app/'
   ];
   
   // Configure the CORS options
