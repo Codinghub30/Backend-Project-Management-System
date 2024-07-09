@@ -9,9 +9,8 @@ import cors from 'cors';
 
 const app = express();
 const allowedOrigins = [
-    'https://blog-app-nine-lake.vercel.app',
-    'http://localhost:5173',
-    'https://blog-ikebfojuf-codinghub30s-projects.vercel.app'
+    'https://backend-project-management-system-1.onrender.com',
+    'http://localhost:3000',
   ];
   
   // Configure the CORS options
