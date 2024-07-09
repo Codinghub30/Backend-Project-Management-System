@@ -2,54 +2,46 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoute from './route/authRoute.js';
-// import taskRoute from './route/taskRoute.js';
 import taskRoute from './route/ProjectRoute.js';
 import cors from 'cors';
 
-
 const app = express();
-const allowedOrigins = ['*'];
-  
-  // Configure the CORS options
-  const corsOptions = {
+
+const allowedOrigins = ['*']; // Allow all origins for simplicity, adjust as needed
+
+// Configure CORS options
+const corsOptions = {
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization'
-  };
-  
-  // Use the CORS middleware
-  app.use(cors(corsOptions));
+};
 
-dotenv.config();
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
-
+dotenv.config(); // Load environment variables from .env file
 
 mongoose.connect(process.env.MONGO)
-.then(() => {
-    console.log('MongoDb is connected');
-})
-.catch((err) => {
-    console.log(err);
-})
+    .then(() => {
+        console.log('MongoDb is connected');
+    })
+    .catch((err) => {
+        console.error('MongoDB connection error:', err);
+    });
 
+app.use(express.json()); // Parse incoming JSON requests
+app.use(cors()); // Use CORS middleware again (you might consider removing this line)
 
-app.use(express.json());
-app.use(cors());
+app.use('/api/auth', authRoute); // Mount authRoute for authentication endpoints
+app.use('/api/project', taskRoute); // Mount taskRoute for project management endpoints
 
-app.use('/api/auth', authRoute);
-app.use('/api/project', taskRoute);
-
-// app.use('/api/projects', projectRoute);
-
-
-
-const PORT = process.env.PORT||9004;
+const PORT = process.env.PORT || 9004;
 app.listen(PORT, () => {
-    console.log(`The server is running at ${PORT}`);
-})
+    console.log(`Server is running at ${PORT}`);
+});
