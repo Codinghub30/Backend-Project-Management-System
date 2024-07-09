@@ -8,6 +8,27 @@ import cors from 'cors';
 
 
 const app = express();
+const allowedOrigins = [
+    'https://blog-app-nine-lake.vercel.app',
+    'http://localhost:5173',
+    'https://blog-ikebfojuf-codinghub30s-projects.vercel.app'
+  ];
+  
+  // Configure the CORS options
+  const corsOptions = {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization'
+  };
+  
+  // Use the CORS middleware
+  app.use(cors(corsOptions));
 
 dotenv.config();
 
